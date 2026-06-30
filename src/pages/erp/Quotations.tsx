@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react'
-import { FileText, Check, X } from 'lucide-react'
+import { FileText, Check, X, Printer } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { useCurrentUser } from '@/store/selectors'
 import { formatCurrency, formatDate, humanize } from '@/lib/utils'
+import { printQuotation } from '@/lib/print'
 import { Badge, Button, Card, EmptyState, Input } from '@/components/ui'
 import { Modal } from '@/components/ui/Modal'
 import { quotationTone } from '@/components/shared/status'
@@ -13,6 +14,7 @@ export default function ErpQuotations() {
   const isAdmin = useStore((s) => s.activeRole === 'admin')
   const all = useStore((s) => s.quotations)
   const users = useStore((s) => s.users)
+  const sellerProfiles = useStore((s) => s.sellerProfiles)
   const setStatus = useStore((s) => s.setQuotationStatus)
 
   const quotations = useMemo(
@@ -26,6 +28,7 @@ export default function ErpQuotations() {
   const [quoteFor, setQuoteFor] = useState<string | null>(null)
   const [price, setPrice] = useState(0)
   const buyerName = (id: string) => users.find((u) => u.id === id)?.name ?? 'Unknown'
+  const sellerName = (id: string) => sellerProfiles.find((s) => s.id === id)?.businessName ?? 'BuildMart Seller'
 
   if (quotations.length === 0) {
     return <EmptyState icon={<FileText size={44} />} title="No quotation requests yet" />
@@ -62,6 +65,13 @@ export default function ErpQuotations() {
                   Quoted: {formatCurrency(q.quotedPrice)}
                 </span>
               )}
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => printQuotation(q, buyerName(q.buyerId), sellerName(q.sellerProfileId))}
+              >
+                <Printer size={14} /> Print / PDF
+              </Button>
               {q.status === 'open' && (
                 <>
                   <Button size="sm" onClick={() => { setQuoteFor(q.id); setPrice(0) }}>

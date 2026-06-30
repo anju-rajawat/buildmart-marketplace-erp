@@ -99,3 +99,113 @@ export function printInvoice(order: Order, buyerName: string): void {
   // give the new window a tick to render before printing
   setTimeout(() => win.print(), 350)
 }
+
+import type { Quotation } from '@/types'
+
+/**
+ * Opens a clean, print-ready QUOTATION / ESTIMATE in a new window and triggers
+ * the print dialog (the user can "Save as PDF" from there).
+ */
+export function printQuotation(q: Quotation, buyerName: string, sellerName: string): void {
+  const win = window.open('', '_blank', 'width=820,height=920')
+  if (!win) {
+    alert('Please allow pop-ups to print the quotation.')
+    return
+  }
+
+  const rows = q.items
+    .map(
+      (it, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${it.name}</td>
+        <td class="r">${it.quantity}</td>
+        <td class="r">${it.unit}</td>
+      </tr>`,
+    )
+    .join('')
+
+  win.document.write(`<!doctype html><html><head><meta charset="utf-8"/>
+  <title>Quotation ${q.code}</title>
+  <style>
+    *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+    body{margin:0;padding:32px;color:#0f172a}
+    .top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #f59e0b;padding-bottom:16px}
+    .brand{font-size:26px;font-weight:800}
+    .brand span{color:#f59e0b}
+    .muted{color:#64748b;font-size:12px}
+    h1{font-size:18px;margin:0}
+    .meta{text-align:right;font-size:13px;color:#334155}
+    .title-box{margin:22px 0 0;border:2px solid #0f172a;border-radius:6px;padding:8px;text-align:center;font-weight:800;letter-spacing:1px}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    .info td{border:1px solid #e2e8f0;padding:8px}
+    .info b{font-size:11px;text-transform:uppercase;color:#64748b;display:block}
+    .items{margin-top:18px}
+    .items th{background:#f8fafc;text-align:left;padding:10px;border:1px solid #e2e8f0;font-size:11px;text-transform:uppercase;color:#64748b}
+    .items td{padding:10px;border:1px solid #f1f5f9}
+    .r{text-align:right}
+    .price{margin:18px 0 0;width:300px;margin-left:auto;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;font-size:13px}
+    .price div{display:flex;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #f1f5f9}
+    .price .grand{background:#fff7ed;font-weight:800;font-size:15px;border-bottom:none}
+    .note{margin-top:18px;font-size:13px;color:#334155}
+    .note i{color:#64748b}
+    .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;background:#fef3c7;color:#92400e}
+    .sign{display:flex;justify-content:space-between;margin-top:50px;font-size:12px}
+    .sign div{border-top:1px solid #94a3b8;padding-top:6px;width:200px}
+    .foot{margin-top:24px;border-top:1px solid #e2e8f0;padding-top:10px;font-size:11px;color:#94a3b8;text-align:center}
+    @media print{body{padding:0}}
+  </style></head><body>
+    <div class="top">
+      <div>
+        <div class="brand">Build<span>Mart</span></div>
+        <div class="muted">Construction Materials Marketplace + ERP<br/>GSTIN: 06AABCB0000A1Z5 · support@buildmart.in</div>
+      </div>
+      <div class="meta">
+        <h1>QUOTATION</h1>
+        <div><b>${q.code}</b></div>
+        <div>Date: ${formatDate(q.createdAt, true)}</div>
+        <div>Status: <span class="pill">${humanize(q.status)}</span></div>
+      </div>
+    </div>
+
+    <div class="title-box">QUOTATION / PRICE ESTIMATE</div>
+
+    <table class="info" style="margin-top:18px">
+      <tr>
+        <td style="width:50%"><b>Customer</b>${buyerName}</td>
+        <td><b>Prepared By</b>${sellerName}</td>
+      </tr>
+      <tr>
+        <td><b>Quotation No</b>${q.code}</td>
+        <td><b>Date</b>${formatDate(q.createdAt)}</td>
+      </tr>
+    </table>
+
+    <table class="items">
+      <thead><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Unit</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+
+    ${
+      q.quotedPrice
+        ? `<div class="price">
+             <div><span>Quoted Total</span><span>${formatCurrency(q.quotedPrice)}</span></div>
+             <div class="grand"><span>Grand Total</span><span>${formatCurrency(q.quotedPrice)}</span></div>
+           </div>`
+        : `<div class="note"><b>Awaiting seller quote.</b></div>`
+    }
+
+    ${q.note ? `<div class="note"><b>Note / Requirement:</b> <i>“${q.note}”</i></div>` : ''}
+
+    <div class="sign">
+      <div>Customer Acceptance</div>
+      <div style="text-align:right">Authorized Signatory<br/>${sellerName}</div>
+    </div>
+
+    <div class="foot">This is a computer-generated quotation. Prices are indicative and subject to confirmation.</div>
+  </body></html>`)
+
+  win.document.close()
+  win.focus()
+  setTimeout(() => win.print(), 350)
+}

@@ -1,10 +1,11 @@
-import { FileText } from 'lucide-react'
+import { FileText, Printer } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { useCurrentUser } from '@/store/selectors'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { Badge, Card, EmptyState } from '@/components/ui'
+import { Badge, Button, Card, EmptyState } from '@/components/ui'
 import { quotationTone } from '@/components/shared/status'
 import { humanize } from '@/lib/utils'
+import { printQuotation } from '@/lib/print'
 
 export default function Quotations() {
   const user = useCurrentUser()
@@ -57,6 +58,17 @@ export default function Quotations() {
                   </span>
                 </div>
               )}
+              <div className="mt-3">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    printQuotation(q, user?.name ?? 'Customer', seller?.businessName ?? 'BuildMart Seller')
+                  }
+                >
+                  <Printer size={14} /> Print / Download PDF
+                </Button>
+              </div>
             </Card>
           )
         })}
