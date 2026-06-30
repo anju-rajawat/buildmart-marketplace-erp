@@ -14,6 +14,15 @@ import {
   X,
   Store,
   ArrowLeftRight,
+  ClipboardList,
+  Warehouse as WarehouseIcon,
+  BarChart3,
+  CreditCard,
+  Receipt,
+  Truck,
+  LifeBuoy,
+  FileBarChart,
+  Settings as SettingsIcon,
 } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { useCurrentUser } from '@/store/selectors'
@@ -36,8 +45,18 @@ const items: NavItem[] = [
   { to: '/erp/orders', label: 'Orders', icon: ShoppingCart },
   { to: '/erp/quotations', label: 'Quotations', icon: FileText },
   { to: '/erp/customers', label: 'Customers', icon: Users, adminOnly: true },
-  { to: '/erp/coupons', label: 'Coupons', icon: Ticket, adminOnly: true },
+  { to: '/erp/vendors', label: 'Vendors', icon: Store, adminOnly: true },
+  { to: '/erp/purchase-orders', label: 'Purchase Orders', icon: ClipboardList, adminOnly: true },
+  { to: '/erp/warehouse', label: 'Warehouse', icon: WarehouseIcon },
+  { to: '/erp/analytics', label: 'Analytics', icon: BarChart3 },
+  { to: '/erp/payments', label: 'Payments', icon: CreditCard, adminOnly: true },
+  { to: '/erp/invoices', label: 'Invoices', icon: Receipt },
+  { to: '/erp/delivery', label: 'Delivery Tracking', icon: Truck },
+  { to: '/erp/tickets', label: 'Support Tickets', icon: LifeBuoy, adminOnly: true },
   { to: '/erp/chat', label: 'Messages', icon: MessageSquare },
+  { to: '/erp/coupons', label: 'Coupons', icon: Ticket, adminOnly: true },
+  { to: '/erp/reports', label: 'Reports', icon: FileBarChart, adminOnly: true },
+  { to: '/erp/settings', label: 'Settings', icon: SettingsIcon },
 ]
 
 export function DashboardShell() {

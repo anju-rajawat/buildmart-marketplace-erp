@@ -276,3 +276,42 @@ export interface AuditLogEntry {
   target: string
   createdAt: string
 }
+
+// ---------------------------------------------------------------------------
+// Procurement & support (ERP)
+// ---------------------------------------------------------------------------
+
+export type POStatus = 'draft' | 'sent' | 'received' | 'cancelled'
+
+export interface PurchaseOrderItem {
+  name: string
+  quantity: number
+  unit: MaterialUnit
+  rate: number
+}
+
+export interface PurchaseOrder {
+  id: string
+  code: string
+  vendorId: string // sellerProfileId of the supplier
+  items: PurchaseOrderItem[]
+  status: POStatus
+  total: number
+  createdAt: string
+  expectedDate: string
+}
+
+export type TicketStatus = 'open' | 'in_progress' | 'resolved' | 'closed'
+export type TicketPriority = 'low' | 'medium' | 'high'
+
+export interface SupportTicket {
+  id: string
+  code: string
+  subject: string
+  userId: string
+  body: string
+  status: TicketStatus
+  priority: TicketPriority
+  createdAt: string
+  updatedAt: string
+}

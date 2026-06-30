@@ -29,6 +29,16 @@ import ErpOrders from '@/pages/erp/Orders'
 import ErpQuotations from '@/pages/erp/Quotations'
 import ErpCustomers from '@/pages/erp/Customers'
 import ErpCoupons from '@/pages/erp/Coupons'
+import ErpVendors from '@/pages/erp/Vendors'
+import ErpPurchaseOrders from '@/pages/erp/PurchaseOrders'
+import ErpWarehouse from '@/pages/erp/Warehouse'
+import ErpAnalytics from '@/pages/erp/Analytics'
+import ErpPayments from '@/pages/erp/Payments'
+import ErpInvoices from '@/pages/erp/Invoices'
+import ErpDelivery from '@/pages/erp/DeliveryTracking'
+import ErpTickets from '@/pages/erp/SupportTickets'
+import ErpReports from '@/pages/erp/Reports'
+import ErpSettings from '@/pages/erp/Settings'
 
 /** Scroll to top on every route change. */
 function ScrollToTop() {
@@ -97,7 +107,17 @@ export default function App() {
           <Route path="orders" element={<ErpOrders />} />
           <Route path="quotations" element={<ErpQuotations />} />
           <Route path="customers" element={<ErpCustomers />} />
+          <Route path="vendors" element={<ErpVendors />} />
+          <Route path="purchase-orders" element={<ErpPurchaseOrders />} />
+          <Route path="warehouse" element={<ErpWarehouse />} />
+          <Route path="analytics" element={<ErpAnalytics />} />
+          <Route path="payments" element={<ErpPayments />} />
+          <Route path="invoices" element={<ErpInvoices />} />
+          <Route path="delivery" element={<ErpDelivery />} />
+          <Route path="tickets" element={<ErpTickets />} />
           <Route path="coupons" element={<ErpCoupons />} />
+          <Route path="reports" element={<ErpReports />} />
+          <Route path="settings" element={<ErpSettings />} />
           <Route path="chat" element={<Chat />} />
         </Route>
 
