@@ -1,0 +1,23 @@
+{
+  "cement": [],
+  "steel": [],
+  "bricks": [],
+  "sand": [
+    "/products/sand-1.jpg"
+  ],
+  "gravel": [
+    "/products/gravel-1.jpg",
+    "/products/gravel-2.jpg",
+    "/products/gravel-3.jpg"
+  ],
+  "tiles": [
+    "/products/tiles-1.jpg",
+    "/products/tiles-2.jpg",
+    "/products/tiles-3.jpg"
+  ],
+  "paint": [
+    "/products/paint-1.jpg"
+  ],
+  "pipes": [],
+  "wire": []
+}
