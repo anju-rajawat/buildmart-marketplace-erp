@@ -43,6 +43,8 @@ const PRODUCT_KEY: Record<string, string> = {
   p_agg_msand: 'sand',
   p_agg_20mm: 'gravel',
   p_agg_gravel: 'gravel',
+  p_agg_10mm: 'gravel',
+  p_agg_dust: 'sand',
 }
 
 /** Explicit per-product image paths (brand-accurate photos). Checked first. */
