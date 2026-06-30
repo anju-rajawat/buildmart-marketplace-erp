@@ -7,14 +7,14 @@ import { ProductImage } from '@/components/ui/ProductImage'
 import { formatCurrency } from '@/lib/utils'
 import { HERO_IMAGE } from '@/lib/images'
 
-// Everyday materials people order most — shown prominently with local (Hindi) names.
+// Everyday materials people order most when building a home.
 const ESSENTIALS = [
-  { id: 'p_cement_acc_opc53', en: 'Cement', hi: 'सीमेंट', img: '/products/cement-1.jpg' },
-  { id: 'p_cement_ultratech_opc', en: 'UltraTech Cement', hi: 'अल्ट्राटेक', img: '/products/cement-2.jpg' },
-  { id: 'p_steel_tata_fe550_12', en: 'Sariya (TMT)', hi: 'सरिया', img: '/products/steel-1.jpg' },
-  { id: 'p_brick_red', en: 'Bricks (Eet)', hi: 'ईंट', img: '/products/bricks-1.jpg' },
-  { id: 'p_agg_river_sand', en: 'Sand (Balu)', hi: 'बालू / रेत', img: '/products/sand-1.jpg' },
-  { id: 'p_agg_20mm', en: 'Aggregate (Gitti)', hi: 'गिट्टी', img: '/products/gravel-1.jpg' },
+  { id: 'p_cement_acc_opc53', en: 'Cement', sub: 'OPC 53 Grade', img: '/products/cement-1.jpg' },
+  { id: 'p_cement_ultratech_opc', en: 'UltraTech Cement', sub: 'OPC 43 Grade', img: '/products/cement-2.jpg' },
+  { id: 'p_steel_tata_fe550_12', en: 'TMT Steel Bars', sub: 'Fe-550 Sariya', img: '/products/steel-1.jpg' },
+  { id: 'p_brick_red', en: 'Red Bricks', sub: 'First-class clay', img: '/products/bricks-1.jpg' },
+  { id: 'p_agg_river_sand', en: 'River Sand', sub: 'Fine grade', img: '/products/sand-1.jpg' },
+  { id: 'p_agg_20mm', en: 'Stone Aggregate', sub: '20mm gitti', img: '/products/gravel-1.jpg' },
 ]
 
 export default function Home() {
@@ -101,8 +101,10 @@ export default function Home() {
       <section>
         <div className="mb-4 flex items-end justify-between">
           <div>
-            <h2 className="text-xl font-bold">Everyday essentials</h2>
-            <p className="text-sm text-slate-500">रोज़ की ज़रूरत — cement, sariya, eet, balu, gitti & more</p>
+            <h2 className="text-xl font-bold">Building a new home? Start here</h2>
+            <p className="text-sm text-slate-500">
+              Everything you need — cement, steel, bricks, sand, aggregate &amp; more
+            </p>
           </div>
           <Link to="/catalog" className="text-sm font-medium text-brand-600 hover:underline">
             View all
@@ -123,7 +125,7 @@ export default function Home() {
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
                   <p className="text-sm font-bold leading-tight text-white">{e.en}</p>
-                  <p className="text-[11px] text-white/80">{e.hi}</p>
+                  <p className="text-[11px] text-white/80">{e.sub}</p>
                 </div>
               </div>
               <div className="flex items-center justify-between px-2.5 py-2">
