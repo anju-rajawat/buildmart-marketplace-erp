@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react'
-import { Plus, ChevronRight, ArrowUpCircle, ShieldCheck, Search, Trash2 } from 'lucide-react'
+import { Plus, ChevronRight, ArrowUpCircle, ShieldCheck, Search, Trash2, Download, Printer } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { useCurrentUser } from '@/store/selectors'
-import { formatCurrency, formatDate } from '@/lib/utils'
+import { formatCurrency, formatDate, humanize } from '@/lib/utils'
+import { exportCsv } from '@/lib/csv'
+import { printInvoice } from '@/lib/print'
 import { Badge, Button, Card, EmptyState, Input, Select } from '@/components/ui'
 import { Modal } from '@/components/ui/Modal'
 import { OrderTracker } from '@/components/shared/OrderTracker'
@@ -43,6 +45,22 @@ export default function ErpOrders() {
   const detail = allOrders.find((o) => o.id === detailId)
   const buyerName = (id: string) => users.find((u) => u.id === id)?.name ?? 'Unknown'
 
+  function exportOrders() {
+    exportCsv(
+      'buildmart-orders.csv',
+      ['Order', 'Customer', 'Date', 'Status', 'Payment', 'Items', 'Total (INR)'],
+      orders.map((o) => [
+        o.code,
+        buyerName(o.buyerId),
+        formatDate(o.createdAt),
+        humanize(o.status),
+        humanize(o.payment.status),
+        o.items.length,
+        o.total,
+      ]),
+    )
+  }
+
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -50,11 +68,16 @@ export default function ErpOrders() {
           <h1 className="text-2xl font-bold">Orders</h1>
           <p className="text-sm text-slate-500">{orders.length} orders</p>
         </div>
-        {isAdmin && (
-          <Button onClick={() => setCreateOpen(true)}>
-            <Plus size={16} /> Place order for customer
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={exportOrders}>
+            <Download size={16} /> Export CSV
           </Button>
-        )}
+          {isAdmin && (
+            <Button onClick={() => setCreateOpen(true)}>
+              <Plus size={16} /> Place order for customer
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Filters */}
@@ -143,6 +166,14 @@ export default function ErpOrders() {
                 {buyerName(detail.buyerId)} · {formatCurrency(detail.total)}
               </span>
               {detail.placedByAdminId && <Badge tone="purple">Placed by admin</Badge>}
+              <Button
+                variant="outline"
+                size="sm"
+                className="ml-auto"
+                onClick={() => printInvoice(detail, buyerName(detail.buyerId))}
+              >
+                <Printer size={14} /> Print invoice
+              </Button>
             </div>
 
             {/* status setter */}

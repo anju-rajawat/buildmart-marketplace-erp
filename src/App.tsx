@@ -20,6 +20,7 @@ import OrderDetail from '@/pages/buyer/OrderDetail'
 import Wishlist from '@/pages/buyer/Wishlist'
 import Quotations from '@/pages/buyer/Quotations'
 import Account from '@/pages/buyer/Account'
+import Calculator from '@/pages/buyer/Calculator'
 
 import ErpDashboard from '@/pages/erp/Dashboard'
 import ErpProducts from '@/pages/erp/Products'
@@ -75,6 +76,7 @@ export default function App() {
           <Route path="/orders" element={<Orders />} />
           <Route path="/orders/:id" element={<OrderDetail />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/calculator" element={<Calculator />} />
           <Route path="/quotations" element={<Quotations />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/account" element={<Account />} />

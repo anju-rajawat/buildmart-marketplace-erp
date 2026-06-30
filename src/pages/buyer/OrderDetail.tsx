@@ -1,7 +1,8 @@
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, MapPin, Receipt, CalendarClock, ShieldCheck, XCircle } from 'lucide-react'
+import { ArrowLeft, MapPin, Receipt, CalendarClock, ShieldCheck, XCircle, Printer, RotateCcw } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { formatCurrency, formatDate, humanize } from '@/lib/utils'
+import { printInvoice } from '@/lib/print'
 import { Badge, Button, Card, EmptyState } from '@/components/ui'
 import { ProductImage } from '@/components/ui/ProductImage'
 import { OrderTracker } from '@/components/shared/OrderTracker'
@@ -13,12 +14,20 @@ export default function OrderDetail() {
   const navigate = useNavigate()
   const order = useStore((s) => s.orders.find((o) => o.id === id))
   const cancelOrder = useStore((s) => s.cancelOrder)
+  const addToCart = useStore((s) => s.addToCart)
+  const buyerName = useStore((s) => s.users.find((u) => u.id === order?.buyerId)?.name ?? 'Customer')
 
   if (!order) {
     return <EmptyState title="Order not found" action={<Button onClick={() => navigate('/orders')}>Back to orders</Button>} />
   }
 
   const canCancel = order.status === 'placed' || order.status === 'confirmed'
+
+  function reorder() {
+    order!.items.forEach((it) => addToCart(it.productId, it.quantity))
+    toast.success('Items added to cart')
+    navigate('/cart')
+  }
 
   return (
     <div className="space-y-6">
@@ -34,11 +43,19 @@ export default function OrderDetail() {
           </h1>
           <p className="text-sm text-slate-400">Placed {formatDate(order.createdAt, true)}</p>
         </div>
-        {order.placedByAdminId && (
-          <Badge tone="purple">
-            <ShieldCheck size={12} /> Placed on your behalf by admin
-          </Badge>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          {order.placedByAdminId && (
+            <Badge tone="purple">
+              <ShieldCheck size={12} /> Placed by admin
+            </Badge>
+          )}
+          <Button variant="outline" size="sm" onClick={() => printInvoice(order, buyerName)}>
+            <Printer size={15} /> Print invoice
+          </Button>
+          <Button variant="outline" size="sm" onClick={reorder}>
+            <RotateCcw size={15} /> Reorder
+          </Button>
+        </div>
       </div>
 
       {/* Tracker */}

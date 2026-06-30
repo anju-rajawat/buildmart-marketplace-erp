@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
-import { Plus, Pencil, Trash2, Search, Package } from 'lucide-react'
+import { Plus, Pencil, Trash2, Search, Package, Download } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { useCurrentUser } from '@/store/selectors'
 import { formatCurrency, uid } from '@/lib/utils'
 import { productImages } from '@/lib/images'
+import { exportCsv } from '@/lib/csv'
 import { Badge, Button, Card, EmptyState, Input, Select } from '@/components/ui'
 import { ProductImage } from '@/components/ui/ProductImage'
 import { Modal } from '@/components/ui/Modal'
@@ -103,9 +104,31 @@ export default function ErpProducts() {
           <h1 className="text-2xl font-bold">Products</h1>
           <p className="text-sm text-slate-500">{list.length} items</p>
         </div>
-        <Button onClick={openCreate}>
-          <Plus size={16} /> Add product
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            onClick={() =>
+              exportCsv(
+                'buildmart-products.csv',
+                ['Name', 'Brand', 'Category', 'Unit', 'Price (INR)', 'MRP (INR)', 'Stock'],
+                list.map((p) => [
+                  p.name,
+                  p.brand,
+                  categories.find((c) => c.id === p.categoryId)?.name ?? '',
+                  p.unit,
+                  p.price,
+                  p.mrp,
+                  p.stock,
+                ]),
+              )
+            }
+          >
+            <Download size={16} /> Export CSV
+          </Button>
+          <Button onClick={openCreate}>
+            <Plus size={16} /> Add product
+          </Button>
+        </div>
       </div>
 
       <div className="relative max-w-sm">

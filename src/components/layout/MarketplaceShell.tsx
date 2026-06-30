@@ -12,6 +12,7 @@ import {
   Building2,
   Heart,
   FileText,
+  Calculator as CalcIcon,
 } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { useCartCount, useCurrentUser } from '@/store/selectors'
@@ -80,6 +81,19 @@ export function MarketplaceShell() {
                 {item.label}
               </NavLink>
             ))}
+            <NavLink
+              to="/calculator"
+              className={({ isActive }) =>
+                cn(
+                  'flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                  isActive
+                    ? 'bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300'
+                    : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800',
+                )
+              }
+            >
+              <CalcIcon size={15} /> Calculator
+            </NavLink>
           </nav>
 
           {/* Search */}
@@ -178,6 +192,7 @@ export function MarketplaceShell() {
             <div className="flex flex-col gap-1">
               {[
                 ...navItems,
+                { to: '/calculator', label: 'Material Calculator', icon: CalcIcon },
                 { to: '/wishlist', label: 'Wishlist', icon: Heart },
                 { to: '/quotations', label: 'Quotations (RFQ)', icon: FileText },
                 { to: '/account', label: 'My Account', icon: Building2 },
