@@ -9,7 +9,7 @@
 
 // How many images exist per material key (files: /products/<key>-<n>.jpg).
 const COUNTS: Record<string, number> = {
-  cement: 3,
+  cement: 5,
   steel: 3,
   bricks: 3,
   sand: 1,
