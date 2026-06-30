@@ -10,7 +10,7 @@ import { HERO_IMAGE } from '@/lib/images'
 // Everyday materials people order most when building a home.
 const ESSENTIALS = [
   { id: 'p_cement_acc_opc53', en: 'Cement', sub: 'OPC 53 Grade', img: '/products/cement-1.jpg' },
-  { id: 'p_cement_ultratech_opc', en: 'UltraTech Cement', sub: 'OPC 43 Grade', img: '/products/cement-2.jpg' },
+  { id: 'p_cement_ultratech_opc', en: 'UltraTech Cement', sub: 'OPC 43 Grade', img: '/products/cement-ultratech.webp' },
   { id: 'p_steel_tata_fe550_12', en: 'TMT Steel Bars', sub: 'Fe-550 Sariya', img: '/products/steel-1.jpg' },
   { id: 'p_brick_red', en: 'Red Bricks', sub: 'First-class clay', img: '/products/bricks-1.jpg' },
   { id: 'p_agg_river_sand', en: 'River Sand', sub: 'Fine grade', img: '/products/sand-1.jpg' },

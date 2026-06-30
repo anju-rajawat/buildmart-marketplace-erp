@@ -45,6 +45,12 @@ const PRODUCT_KEY: Record<string, string> = {
   p_agg_gravel: 'gravel',
 }
 
+/** Explicit per-product image paths (brand-accurate photos). Checked first. */
+const PRODUCT_IMAGES: Record<string, string[]> = {
+  p_cement_ultratech_opc: ['/products/cement-ultratech.webp', '/products/cement-1.jpg', '/products/cement-3.jpg'],
+  p_cement_ultratech_opc53: ['/products/cement-ultratech.webp', '/products/cement-3.jpg', '/products/cement-1.jpg'],
+}
+
 /** Stable small hash of a string → non-negative int. */
 function hash(s: string): number {
   let h = 0
@@ -61,6 +67,7 @@ function rotate<T>(arr: T[], n: number): T[] {
 
 /** Returns the real material photos for a product (main + alternates), varied per product. */
 export function productImages(productId: string, categoryId: string, _index?: number): string[] {
+  if (PRODUCT_IMAGES[productId]) return PRODUCT_IMAGES[productId]
   const key = PRODUCT_KEY[productId] ?? CATEGORY_KEY[categoryId] ?? 'cement'
   const base = pool(key)
   return rotate(base, hash(productId))
