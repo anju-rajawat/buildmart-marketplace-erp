@@ -515,11 +515,11 @@ export const useStore = create<StoreState>()(
       name: 'buildmart-store-v1',
       // Bump when seed data shape/imagery changes. v2 refreshes catalog to real
       // material photos while keeping the user's session, orders, cart, etc.
-      version: 4,
+      version: 5,
       migrate: (persisted, version) => {
         const state = persisted as Partial<StoreState>
         const next =
-          version < 4
+          version < 5
             ? { ...state, products: seed.products, inventory: seed.inventory }
             : state
         return next as StoreState

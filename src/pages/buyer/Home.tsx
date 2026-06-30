@@ -3,13 +3,29 @@ import { ArrowRight, Truck, ShieldCheck, BadgePercent, Headset } from 'lucide-re
 import { useStore } from '@/store/useStore'
 import { ProductCard } from '@/components/shared/ProductCard'
 import { DynamicIcon } from '@/components/shared/DynamicIcon'
+import { ProductImage } from '@/components/ui/ProductImage'
+import { formatCurrency } from '@/lib/utils'
 import { HERO_IMAGE } from '@/lib/images'
+
+// Everyday materials people order most — shown prominently with local (Hindi) names.
+const ESSENTIALS = [
+  { id: 'p_cement_acc_opc53', en: 'Cement', hi: 'सीमेंट', img: '/products/cement-1.jpg' },
+  { id: 'p_cement_ultratech_opc', en: 'UltraTech Cement', hi: 'अल्ट्राटेक', img: '/products/cement-2.jpg' },
+  { id: 'p_steel_tata_fe550_12', en: 'Sariya (TMT)', hi: 'सरिया', img: '/products/steel-1.jpg' },
+  { id: 'p_brick_red', en: 'Bricks (Eet)', hi: 'ईंट', img: '/products/bricks-1.jpg' },
+  { id: 'p_agg_river_sand', en: 'Sand (Balu)', hi: 'बालू / रेत', img: '/products/sand-1.jpg' },
+  { id: 'p_agg_20mm', en: 'Aggregate (Gitti)', hi: 'गिट्टी', img: '/products/gravel-1.jpg' },
+]
 
 export default function Home() {
   const categories = useStore((s) => s.categories)
   const products = useStore((s) => s.products)
   const featured = products.filter((p) => p.featured)
   const topRated = [...products].sort((a, b) => b.rating - a.rating).slice(0, 8)
+
+  const essentials = ESSENTIALS.map((e) => ({ ...e, product: products.find((p) => p.id === e.id) })).filter(
+    (e) => e.product,
+  )
 
   return (
     <div className="space-y-10">
@@ -79,6 +95,47 @@ export default function Home() {
             </div>
           )
         })}
+      </section>
+
+      {/* Everyday essentials — the materials most people order */}
+      <section>
+        <div className="mb-4 flex items-end justify-between">
+          <div>
+            <h2 className="text-xl font-bold">Everyday essentials</h2>
+            <p className="text-sm text-slate-500">रोज़ की ज़रूरत — cement, sariya, eet, balu, gitti & more</p>
+          </div>
+          <Link to="/catalog" className="text-sm font-medium text-brand-600 hover:underline">
+            View all
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {essentials.map((e) => (
+            <Link
+              key={e.id}
+              to={`/product/${e.product!.slug}`}
+              className="card group overflow-hidden transition-shadow hover:shadow-md"
+            >
+              <div className="relative">
+                <ProductImage
+                  src={e.img}
+                  alt={e.en}
+                  className="aspect-square w-full transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                  <p className="text-sm font-bold leading-tight text-white">{e.en}</p>
+                  <p className="text-[11px] text-white/80">{e.hi}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between px-2.5 py-2">
+                <span className="text-xs text-slate-500">from</span>
+                <span className="text-sm font-bold text-brand-600 dark:text-brand-400">
+                  {formatCurrency(e.product!.price)}
+                  <span className="text-[10px] font-normal text-slate-400">/{e.product!.unit}</span>
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* Categories */}

@@ -45,10 +45,25 @@ const PRODUCT_KEY: Record<string, string> = {
   p_agg_gravel: 'gravel',
 }
 
-/** Returns the real material photos for a product (main + alternates). */
+/** Stable small hash of a string → non-negative int. */
+function hash(s: string): number {
+  let h = 0
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0
+  return Math.abs(h)
+}
+
+/** Rotate an array so different products in a category lead with different images. */
+function rotate<T>(arr: T[], n: number): T[] {
+  if (arr.length <= 1) return arr
+  const k = n % arr.length
+  return [...arr.slice(k), ...arr.slice(0, k)]
+}
+
+/** Returns the real material photos for a product (main + alternates), varied per product. */
 export function productImages(productId: string, categoryId: string, _index?: number): string[] {
   const key = PRODUCT_KEY[productId] ?? CATEGORY_KEY[categoryId] ?? 'cement'
-  return pool(key)
+  const base = pool(key)
+  return rotate(base, hash(productId))
 }
 
 /** Attractive hero / banner photo of a real construction site (bundled locally). */
