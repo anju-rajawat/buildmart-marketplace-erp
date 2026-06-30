@@ -21,3 +21,8 @@ dist-ssr
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Personal / portfolio assets (not part of BuildMart)
+Portfolio_Anjali/
+Anjali_Resume_final.pdf
+Photo.webp
